@@ -1,5 +1,6 @@
 package trees1;
 
+// https://leetcode.com/problems/count-univalue-subtrees/
 public class SingleValueTree {
   public int countUnivalSubtrees(TreeNode root) {
     if (root == null) {
