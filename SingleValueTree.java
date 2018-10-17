@@ -1,37 +1,35 @@
 package trees1;
 
 public class SingleValueTree {
-  /*
- * Complete the function below.
- */
-  static int findSingleValueTrees(Node n) {
-    if (n == null) {
+  public int countUnivalSubtrees(TreeNode root) {
+    if (root == null) {
       return 0;
     }
-    int r = findSingleValueTrees(n.val, n);
-    return r == 0 ? 1 : r;
+    return countUnivalSubtreesBottomUp(root)[0];
   }
-
-  static int findSingleValueTrees(int parentVal, Node n) {
-    if (n.left == null && n.right == null) {
-      return (n.val == parentVal) ? 1 : 0;
+    
+  // [0] = count, [1] = 0 for false and 1 for true
+  public int[] countUnivalSubtreesBottomUp(TreeNode root) {
+    if (root.left == null && root.right == null) {
+      return new int[]{1, 1};
     }
-    int left = 0;
-    if (n.left != null) {
-      left = findSingleValueTrees(n.val, n.left);
+    
+    int[] result = new int[2];
+    boolean isUniSub = true;
+    if (root.left != null) {
+      int[] left = countUnivalSubtreesBottomUp(root.left);
+      result[0] += left[0];
+      isUniSub = isUniSub && left[1] == 1 && root.left.val == root.val;
     }
-    int right = 0;
-    if (n.right != null) {
-      right = findSingleValueTrees(n.val, n.right);
+    if (root.right != null) {
+      int[] right = countUnivalSubtreesBottomUp(root.right);
+      result[0] += right[0];
+      isUniSub = isUniSub && right[1] == 1 && root.right.val == root.val;
     }
-    int total = left + right;
-    if (total > 0 && n.val == parentVal) {
-      return 1 + total;
+    if (isUniSub) {
+      result[0]++;
+      result[1] = 1;
     }
-    return 0;
-  }
-
-  public static void main(String[] args) {
-
+    return result;
   }
 }
